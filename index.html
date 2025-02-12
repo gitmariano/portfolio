@@ -85,20 +85,18 @@
       height: 100vh;
       overflow: hidden;
     }
-    /* El canvas ocupa toda la sección hero */
     #hero-canvas {
       position: absolute;
       top: 0;
       left: 0;
       z-index: 1;
     }
-    /* Contenido del Hero */
     .hero-content {
       position: relative;
       z-index: 2;
       text-align: center;
       padding: 20px;
-      margin-top: 60px; /* para evitar que quede tapado por el header */
+      margin-top: 60px;
     }
     .hero h2 {
       font-size: 3em;
@@ -187,7 +185,7 @@
       max-width: 800px;
       margin: 0 auto 30px;
     }
-    /* Botón de copiar correo (con ícono de sobre) */
+    /* Botón de copiar email */
     #copyEmailButton {
       padding: 10px 20px;
       font-size: 1em;
@@ -207,12 +205,10 @@
     #copyEmailButton:hover {
       background: rgba(255, 255, 255, 0.5);
     }
-    /* Ícono de sobre: siempre de 32px */
     .email-icon {
       font-size: 32px;
       line-height: 1;
     }
-    /* El texto del botón se separa en su propio span */
     .button-text {
       font-size: 1em;
     }
@@ -285,12 +281,37 @@
       -ms-user-select: none;
       user-select: none;
     }
+    
+    /* ==============================================
+       Botón Volver Arriba
+    ============================================== */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--btn-bg);
+      color: var(--color-texto);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.5em;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 3000;
+    }
+    #backToTop.show {
+      opacity: 1;
+      visibility: visible;
+    }
   </style>
 </head>
 <body>
   <!-- Encabezado -->
   <header>
-    <h1>Mi Portafolio</h1>
+    <h1>Mariano Beltran</h1>
     <nav>
       <a href="#projects">Proyectos</a>
       <a href="#contact">Contacto</a>
@@ -302,7 +323,7 @@
     <canvas id="hero-canvas"></canvas>
     <div class="hero-content">
       <h2>Bienvenido a Mi Mundo Digital</h2>
-      <p>Explora mis proyectos y disfruta de un toque interactivo. Cambia el tema para jugar a Asteroids y ver mi habilidad en HTML, CSS y JS.</p>
+      <p>Explora y disfruta un toque interactivo. Cambia el tema para jugar a Asteroids y ver mi habilidad en HTML, PHP, CSS y JS.</p>
       <button onclick="scrollToProjects()">Ver Proyectos</button>
       <button id="toggleGameBtn" onclick="toggleGameMode()">Cambiar Tema a Asteroids</button>
     </div>
@@ -358,7 +379,7 @@
   <!-- Sección de Contacto -->
   <section id="contact">
     <h3>Contacto</h3>
-    <p>¿Necesitas una solución personalizada? Nos encantaría explorar la posibilidad, gracias a nuestro novedoso método de desarrollo, ¡hemos reducido 10x los costes de armado web! Envíanos un mensaje y tendrás una cotización al mismo día.</p>
+    <p>¿Necesitas una solución personalizada? Nos encantaría explorar la posibilidad. Gracias a nuestro novedoso método de desarrollo, que incluye modelos de IA de avanzada, hemos reducido hasta 10 veces los costes de desarrollo web. Envíanos un mensaje y tendrás una cotización el mismo día.</p>
     <button id="copyEmailButton">
       <span class="email-icon">✉</span>
       <span class="button-text">Copiar Email</span>
@@ -367,7 +388,7 @@
   
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Mi Portafolio. Todos los derechos reservados.</p>
+    <p>&copy; 2025 Mi Portfolio. Todos los derechos reservados.</p>
   </footer>
   
   <!-- Controles móviles (comandos de Asteroids) -->
@@ -382,8 +403,11 @@
     <button class="btn-shoot">●</button>
   </div>
   
+  <!-- Botón Volver Arriba -->
+  <button id="backToTop" title="Volver Arriba">↑</button>
+  
   <!-- ==============================================
-       Scripts: Efecto de letras (modo "particles"), Carrusel y Juego Asteroids
+       Scripts: Efecto de letras (modo "particles"), Carrusel, Juego Asteroids y Volver Arriba
   ============================================== -->
   <script>
     // Variables Globales y Canvas
@@ -484,7 +508,6 @@
       const mobileControls = document.querySelector('.mobile-controls');
       const hero = document.querySelector('.hero');
       if(mobileControls){
-        // Solo se muestran si estamos en modo "asteroids", en pantalla móvil y la sección de juego sigue visible
         if(currentMode === "asteroids" && window.innerWidth <= 768 && hero.getBoundingClientRect().bottom >= 50){
           mobileControls.style.display = "block";
         } else {
@@ -715,6 +738,14 @@
           updateMobileControls();
         }
       }
+      
+      // Botón Volver Arriba
+      const backToTop = document.getElementById("backToTop");
+      if (window.pageYOffset > 300) {
+        backToTop.classList.add("show");
+      } else {
+        backToTop.classList.remove("show");
+      }
     });
     
     function scrollToProjects() {
@@ -783,7 +814,6 @@
         }
       });
     }
-    
     // Función para copiar el email y cambiar el texto del botón
     function copyEmail() {
       const email = "marianobeltran@gmail.com";
@@ -809,6 +839,11 @@
     if (copyEmailButton) {
       copyEmailButton.addEventListener('click', copyEmail);
     }
+    // Botón Volver Arriba
+    const backToTop = document.getElementById("backToTop");
+    backToTop.addEventListener("click", function(){
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
     
     // Al cargar la página, actualizar la visibilidad de los controles móviles
     updateMobileControls();
