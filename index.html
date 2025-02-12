@@ -171,6 +171,57 @@
     }
     
     /* ==============================================
+       Sección de Contacto
+    ============================================== */
+    #contact {
+      padding: 60px 20px;
+      background: rgba(0, 0, 0, 0.25);
+      text-align: center;
+    }
+    #contact h3 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+    #contact p {
+      font-size: 1.2em;
+      max-width: 800px;
+      margin: 0 auto 30px;
+    }
+    #contact form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    #contact input[type="email"],
+    #contact textarea {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    #contact textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    #contact button {
+      padding: 10px 25px;
+      font-size: 1em;
+      border: none;
+      border-radius: 25px;
+      background: var(--btn-bg);
+      color: var(--color-texto);
+      cursor: pointer;
+      transition: background 0.3s;
+      width: 200px;
+      margin: 0 auto;
+    }
+    #contact button:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+    
+    /* ==============================================
        Footer
     ================================================ */
     footer {
@@ -184,9 +235,9 @@
     /* ==============================================
        Controles para dispositivos móviles (comandos del Asteroids)
        Se muestran sólo en modo "asteroids" y en pantallas pequeñas (<=768px)
-    ================================================ */
+    ============================================== */
     .mobile-controls {
-      /* Por defecto se mantienen ocultos; su visualización la gestionará JS */
+      /* Por defecto se mantienen ocultos; su visibilidad la gestionará JS */
       display: none;
       position: fixed;
       bottom: 20px;
@@ -313,8 +364,19 @@
     </div>
   </section>
   
+  <!-- Sección de Contacto -->
+  <section id="contact">
+    <h3>Contacto</h3>
+    <p>¿Necesitas una solución personalizada? Nos encantaría explorar la posibilidad, gracias a nuestro novedoso método de desarrollo, ¡hemos reducido 10x los costes de armado web! Envía un mensaje, tendrás una cotización al mismo día.</p>
+    <form action="mailto:tucorreo@dominio.com" method="post" enctype="text/plain">
+      <input type="email" name="email" placeholder="Tu email" required>
+      <textarea name="message" placeholder="Tu mensaje" required></textarea>
+      <button type="submit">Enviar Mensaje</button>
+    </form>
+  </section>
+  
   <!-- Footer -->
-  <footer id="contact">
+  <footer>
     <p>&copy; 2025 Mi Portafolio. Todos los derechos reservados.</p>
   </footer>
   
@@ -657,7 +719,6 @@
       
       const hero = document.querySelector('.hero');
       if (hero) {
-        // Si la parte inferior de la sección hero está muy arriba (menos de 50px visibles)
         if (hero.getBoundingClientRect().bottom < 50) {
           document.querySelector('.mobile-controls').style.display = "none";
         } else {
