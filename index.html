@@ -128,51 +128,48 @@
     /* ==============================================
        Sección de Proyectos (Carrusel)
     ================================================ */
-    /* Contenedor del slider: oculta el overflow */
-/* Sección de Proyectos con Efecto Parallax */
-.projects {
-  padding: 60px 20px;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(5px);
-  position: relative;
-  overflow: hidden;
-}
-.projects h3 {
-  text-align: center;
-  margin-bottom: 40px;
-  font-size: 2em;
-  color: var(--color-texto);
-}
-.projects-container {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-.project {
-  position: relative;
-  overflow: hidden;
-  border-radius: 10px;
-  transition: transform 0.3s ease-out;
-}
-.project img {
-  width: 100%;
-  display: block;
-  border-radius: 10px;
-}
-.project a {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.5);
-  color: var(--color-texto);
-  padding: 10px 20px;
-  text-decoration: none;
-  border-radius: 5px;
-  z-index: 1;
-}
-
-
+    .projects {
+      padding: 60px 20px;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(5px);
+      position: relative;
+      overflow: hidden;
+    }
+    .projects h3 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2em;
+      color: var(--color-texto);
+    }
+    .projects-container {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .project {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      transition: transform 0.3s ease-out;
+    }
+    .project img {
+      width: 100%;
+      display: block;
+      border-radius: 10px;
+    }
+    .project a {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--color-texto);
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      z-index: 1;
+    }
+    
     /* ==============================================
        Footer
     ================================================ */
@@ -182,6 +179,63 @@
       background: rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(5px);
       font-size: 0.9em;
+    }
+    
+    /* ==============================================
+       Controles para dispositivos móviles
+       (solo se muestran en pantallas pequeñas)
+    ================================================ */
+    .mobile-controls {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      z-index: 2000;
+      pointer-events: none;
+    }
+    /* Ahora se organiza la sección de movimiento en columna */
+    .mobile-movement {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+    }
+    /* Contenedor para las flechas izquierda y derecha */
+    .btn-horizontal {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-move {
+      width: 50px;
+      height: 50px;
+      background: var(--btn-bg);
+      border: none;
+      border-radius: 10px;
+      color: var(--color-texto);
+      font-size: 1.5em;
+    }
+    .btn-shoot {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: var(--btn-bg);
+      border: none;
+      border-radius: 50%;
+      color: var(--color-texto);
+      font-size: 1.5em;
+      pointer-events: auto;
+    }
+    @media (max-width: 768px) {
+      .mobile-controls {
+        display: block;
+      }
     }
   </style>
 </head>
@@ -209,60 +263,68 @@
   </section>
   
   <!-- Sección de Proyectos (Carrusel) -->
-  <!-- Sección de Proyectos: Slider Horizontal Continuo -->
-<!-- Sección de Proyectos: Efecto Parallax -->
-<section class="projects" id="projects">
-  <h3>Mis Proyectos</h3>
-  <div class="projects-container">
-    <div class="project" data-speed="0.1">
-      <img src="Screenshots/1.png" alt="Proyecto 1">
-      <a href="2093_flight/index.html" target="_blank">Live Demo</a>
+  <section class="projects" id="projects">
+    <h3>Mis Proyectos</h3>
+    <div class="projects-container">
+      <div class="project" data-speed="0.1">
+        <img src="Screenshots/1.png" alt="Proyecto 1">
+        <a href="2093_flight/index.html" target="_blank">Live Demo</a>
+      </div>
+      <div class="project" data-speed="0.15">
+        <img src="Screenshots/2.png" alt="Proyecto 2">
+        <a href="Atema/index.html" target="_blank">Live Demo</a>
+      </div>
+      <div class="project" data-speed="0.2">
+        <img src="Screenshots/3.png" alt="Proyecto 3">
+        <a href="Beauttio Website Template/index.html" target="_blank">Live Demo</a>
+      </div>
+      <div class="project" data-speed="0.12">
+        <img src="Screenshots/4.png" alt="Proyecto 4">
+        <a href="carvilla-v1.0/index.html" target="_blank">Live Demo</a>
+      </div>
+      <div class="project" data-speed="0.18">
+        <img src="Screenshots/5.png" alt="Proyecto 5">
+        <a href="dpot/index.html" target="_blank">Live Demo</a>
+      </div>
+      <div class="project" data-speed="0.14">
+        <img src="Screenshots/6.png" alt="Proyecto 6">
+        <a href="giftos-html/index.html" target="_blank">Live Demo</a>
+      </div>
+      <div class="project" data-speed="0.16">
+        <img src="Screenshots/7.png" alt="Proyecto 7">
+        <a href="labspa/index.html" target="_blank">Live Demo</a>
+      </div>
+      <div class="project" data-speed="0.11">
+        <img src="Screenshots/8.png" alt="Proyecto 8">
+        <a href="law-firm-website-template/index.html" target="_blank">Live Demo</a>
+      </div>
+      <div class="project" data-speed="0.17">
+        <img src="Screenshots/9.png" alt="Proyecto 9">
+        <a href="melodi/index.html" target="_blank">Live Demo</a>
+      </div>
+      <div class="project" data-speed="0.13">
+        <img src="Screenshots/10.png" alt="Proyecto 10">
+        <a href="pet-shop-website-template/index.html" target="_blank">Live Demo</a>
+      </div>
     </div>
-    <div class="project" data-speed="0.15">
-      <img src="Screenshots/2.png" alt="Proyecto 2">
-      <a href="Atema/index.html" target="_blank">Live Demo</a>
-    </div>
-    <div class="project" data-speed="0.2">
-      <img src="Screenshots/3.png" alt="Proyecto 3">
-      <a href="Beauttio Website Template/index.html" target="_blank">Live Demo</a>
-    </div>
-    <div class="project" data-speed="0.12">
-      <img src="Screenshots/4.png" alt="Proyecto 4">
-      <a href="carvilla-v1.0/index.html" target="_blank">Live Demo</a>
-    </div>
-    <div class="project" data-speed="0.18">
-      <img src="Screenshots/5.png" alt="Proyecto 5">
-      <a href="dpot/index.html" target="_blank">Live Demo</a>
-    </div>
-    <div class="project" data-speed="0.14">
-      <img src="Screenshots/6.png" alt="Proyecto 6">
-      <a href="giftos-html/index.html" target="_blank">Live Demo</a>
-    </div>
-    <div class="project" data-speed="0.16">
-      <img src="Screenshots/7.png" alt="Proyecto 7">
-      <a href="labspa/index.html" target="_blank">Live Demo</a>
-    </div>
-    <div class="project" data-speed="0.11">
-      <img src="Screenshots/8.png" alt="Proyecto 8">
-      <a href="law-firm-website-template/index.html" target="_blank">Live Demo</a>
-    </div>
-    <div class="project" data-speed="0.17">
-      <img src="Screenshots/9.png" alt="Proyecto 9">
-      <a href="melodi/index.html" target="_blank">Live Demo</a>
-    </div>
-    <div class="project" data-speed="0.13">
-      <img src="Screenshots/10.png" alt="Proyecto 10">
-      <a href="pet-shop-website-template/index.html" target="_blank">Live Demo</a>
-    </div>
-  </div>
-</section>
-
-
+  </section>
   
   <!-- Footer -->
   <footer id="contact">
     <p>&copy; 2025 Mi Portafolio. Todos los derechos reservados.</p>
   </footer>
+  
+  <!-- Controles móviles (solo se muestran en dispositivos táctiles/pantallas pequeñas) -->
+  <div class="mobile-controls">
+    <div class="mobile-movement">
+      <button class="btn-move btn-up">↑</button>
+      <div class="btn-horizontal">
+        <button class="btn-move btn-left">←</button>
+        <button class="btn-move btn-right">→</button>
+      </div>
+    </div>
+    <button class="btn-shoot">●</button>
+  </div>
   
   <!-- ==============================================
        Scripts: Efecto de letras (modo "particles"), Carrusel y Juego Asteroids
@@ -302,7 +364,7 @@
         this.char = char;
         this.size = Math.random() * 15 + 10;
         this.velocityX = (Math.random() - 0.5) * 2;
-        this.velocityY = speed;
+        this.velocityY = this.speed;
       }
       update() {
         const dx = mouse.x - this.x;
@@ -516,13 +578,11 @@
           let dy = asteroids[i].y - bullets[j].y;
           let distance = Math.sqrt(dx * dx + dy * dy);
           if (distance < asteroids[i].radius + bullets[j].radius) {
-            // Guardamos el asteroide destruido para fragmentarlo
             let destroyedAsteroid = asteroids[i];
             bullets.splice(j, 1);
             asteroids.splice(i, 1);
-            // Si el asteroide es lo suficientemente grande, lo fragmentamos en entre 3 y 5 piezas
             if (destroyedAsteroid.radius > 10) {
-              let pieces = Math.floor(Math.random() * 3) + 3; // genera 3, 4 o 5 piezas
+              let pieces = Math.floor(Math.random() * 3) + 3;
               for (let k = 0; k < pieces; k++) {
                 let newRadius = destroyedAsteroid.radius / 2;
                 let newVelocityX = (Math.random() - 0.5) * 2;
@@ -545,7 +605,7 @@
       asteroidsAnimationId = requestAnimationFrame(animateAsteroids);
     }
     
-    // Controles del juego Asteroids
+    // Controles del juego Asteroids para teclado
     window.addEventListener('keydown', function(e) {
       keys[e.key] = true;
       if (currentMode === "asteroids" && e.key === " ") {
@@ -562,24 +622,83 @@
       keys[e.key] = false;
     });
     
-    // Seleccionamos el contenedor del slider
+    // Ajuste del efecto parallax en los proyectos
     window.addEventListener('scroll', function() {
-  const projects = document.querySelectorAll('.project');
-  projects.forEach(project => {
-    const speed = parseFloat(project.getAttribute('data-speed'));
-    // Se obtiene la posición del elemento respecto al viewport
-    const rect = project.getBoundingClientRect();
-    // Calculamos el offset; cuanto más cerca del centro del viewport, menor será el efecto.
-    const offset = (rect.top - window.innerHeight / 2) * speed;
-    project.style.transform = `translateY(${offset}px)`;
-  });
-});
-
-function scrollToProjects() {
-    document.getElementById("projects").scrollIntoView({ behavior: "smooth" });
-  }
-
-
+      const projects = document.querySelectorAll('.project');
+      projects.forEach(project => {
+        const speed = parseFloat(project.getAttribute('data-speed'));
+        const rect = project.getBoundingClientRect();
+        const offset = (rect.top - window.innerHeight / 2) * speed;
+        project.style.transform = `translateY(${offset}px)`;
+      });
+    });
+    
+    function scrollToProjects() {
+      document.getElementById("projects").scrollIntoView({ behavior: "smooth" });
+    }
+    
+    // --- Controles móviles (o en dispositivos con pantalla pequeña) ---
+    // Se utilizan eventos pointer para que funcionen tanto en dispositivos táctiles como con ratón.
+    const btnLeft = document.querySelector('.btn-left');
+    const btnUp = document.querySelector('.btn-up');
+    const btnRight = document.querySelector('.btn-right');
+    const btnShoot = document.querySelector('.btn-shoot');
+    
+    if (btnLeft) {
+      btnLeft.addEventListener('pointerdown', function(e) {
+        keys['a'] = true;
+        e.preventDefault();
+      });
+      btnLeft.addEventListener('pointerup', function(e) {
+        keys['a'] = false;
+        e.preventDefault();
+      });
+      btnLeft.addEventListener('pointerleave', function(e) {
+        keys['a'] = false;
+      });
+    }
+    
+    if (btnUp) {
+      btnUp.addEventListener('pointerdown', function(e) {
+        keys['w'] = true;
+        e.preventDefault();
+      });
+      btnUp.addEventListener('pointerup', function(e) {
+        keys['w'] = false;
+        e.preventDefault();
+      });
+      btnUp.addEventListener('pointerleave', function(e) {
+        keys['w'] = false;
+      });
+    }
+    
+    if (btnRight) {
+      btnRight.addEventListener('pointerdown', function(e) {
+        keys['d'] = true;
+        e.preventDefault();
+      });
+      btnRight.addEventListener('pointerup', function(e) {
+        keys['d'] = false;
+        e.preventDefault();
+      });
+      btnRight.addEventListener('pointerleave', function(e) {
+        keys['d'] = false;
+      });
+    }
+    
+    if (btnShoot) {
+      btnShoot.addEventListener('pointerdown', function(e) {
+        e.preventDefault();
+        if (currentMode === "asteroids") {
+          let bullet = new Bullet(
+            ship.x + Math.cos(ship.angle) * 20,
+            ship.y + Math.sin(ship.angle) * 20,
+            ship.angle
+          );
+          bullets.push(bullet);
+        }
+      });
+    }
   </script>
 </body>
 </html>
