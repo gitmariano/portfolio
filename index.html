@@ -7,7 +7,7 @@
   <style>
     /* ==============================================
        Variables y Reset
-    ================================================ */
+    ============================================== */
     :root {
       --color-fondo: #141e30;
       --color-fondo2: #243b55;
@@ -25,7 +25,7 @@
     
     /* ==============================================
        Fondo Global Animado
-    ================================================ */
+    ============================================== */
     body {
       font-family: 'Arial', sans-serif;
       background: linear-gradient(-45deg, var(--color-fondo), var(--color-fondo2), #1f1c2c, #928dab);
@@ -48,7 +48,7 @@
     
     /* ==============================================
        Header Fijo
-    ================================================ */
+    ============================================== */
     header {
       position: fixed;
       top: 0;
@@ -79,7 +79,7 @@
     
     /* ==============================================
        Sección Hero: Contendrá un canvas que usaremos para ambos modos
-    ================================================ */
+    ============================================== */
     .hero {
       position: relative;
       height: 100vh;
@@ -127,7 +127,7 @@
     
     /* ==============================================
        Sección de Proyectos (Carrusel)
-    ================================================ */
+    ============================================== */
     .projects {
       padding: 60px 20px;
       background: rgba(0, 0, 0, 0.2);
@@ -187,26 +187,9 @@
       max-width: 800px;
       margin: 0 auto 30px;
     }
-    #contact form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    #contact input[type="email"],
-    #contact textarea {
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1em;
-    }
-    #contact textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-    #contact button {
-      padding: 10px 25px;
+    /* Botón de copiar correo (con ícono de sobre) */
+    #copyEmailButton {
+      padding: 10px 20px;
       font-size: 1em;
       border: none;
       border-radius: 25px;
@@ -214,16 +197,29 @@
       color: var(--color-texto);
       cursor: pointer;
       transition: background 0.3s;
-      width: 200px;
-      margin: 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      min-width: 150px;
+      justify-content: center;
     }
-    #contact button:hover {
+    #copyEmailButton:hover {
       background: rgba(255, 255, 255, 0.5);
+    }
+    /* Ícono de sobre: siempre de 32px */
+    .email-icon {
+      font-size: 32px;
+      line-height: 1;
+    }
+    /* El texto del botón se separa en su propio span */
+    .button-text {
+      font-size: 1em;
     }
     
     /* ==============================================
        Footer
-    ================================================ */
+    ============================================== */
     footer {
       text-align: center;
       padding: 20px;
@@ -237,7 +233,6 @@
        Se muestran sólo en modo "asteroids" y en pantallas pequeñas (<=768px)
     ============================================== */
     .mobile-controls {
-      /* Por defecto se mantienen ocultos; su visibilidad la gestionará JS */
       display: none;
       position: fixed;
       bottom: 20px;
@@ -246,7 +241,6 @@
       z-index: 2000;
       pointer-events: none;
     }
-    /* Organización en columna */
     .mobile-movement {
       position: fixed;
       bottom: 20px;
@@ -257,7 +251,6 @@
       gap: 10px;
       pointer-events: auto;
     }
-    /* Contenedor para flechas izquierda y derecha en fila */
     .btn-horizontal {
       display: flex;
       gap: 10px;
@@ -310,9 +303,7 @@
     <div class="hero-content">
       <h2>Bienvenido a Mi Mundo Digital</h2>
       <p>Explora mis proyectos y disfruta de un toque interactivo. Cambia el tema para jugar a Asteroids y ver mi habilidad en HTML, CSS y JS.</p>
-      <!-- Botón para desplazarse a la sección de proyectos -->
       <button onclick="scrollToProjects()">Ver Proyectos</button>
-      <!-- Botón para cambiar el "tema": de letras animadas a juego Asteroids -->
       <button id="toggleGameBtn" onclick="toggleGameMode()">Cambiar Tema a Asteroids</button>
     </div>
   </section>
@@ -367,12 +358,11 @@
   <!-- Sección de Contacto -->
   <section id="contact">
     <h3>Contacto</h3>
-    <p>¿Necesitas una solución personalizada? Nos encantaría explorar la posibilidad, gracias a nuestro novedoso método de desarrollo, ¡hemos reducido 10x los costes de armado web! Envía un mensaje, tendrás una cotización al mismo día.</p>
-    <form action="mailto:tucorreo@dominio.com" method="post" enctype="text/plain">
-      <input type="email" name="email" placeholder="Tu email" required>
-      <textarea name="message" placeholder="Tu mensaje" required></textarea>
-      <button type="submit">Enviar Mensaje</button>
-    </form>
+    <p>¿Necesitas una solución personalizada? Nos encantaría explorar la posibilidad, gracias a nuestro novedoso método de desarrollo, ¡hemos reducido 10x los costes de armado web! Envíanos un mensaje y tendrás una cotización al mismo día.</p>
+    <button id="copyEmailButton">
+      <span class="email-icon">✉</span>
+      <span class="button-text">Copiar Email</span>
+    </button>
   </section>
   
   <!-- Footer -->
@@ -794,7 +784,33 @@
       });
     }
     
-    // Al cargar la página, actualizar la visibilidad de los controles
+    // Función para copiar el email y cambiar el texto del botón
+    function copyEmail() {
+      const email = "marianobeltran@gmail.com";
+      const copyEmailButton = document.getElementById('copyEmailButton');
+      const textSpan = copyEmailButton.querySelector('.button-text');
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(email).then(function() {
+          textSpan.innerText = "Email Copiado";
+          setTimeout(function() {
+            textSpan.innerText = "Copiar Email";
+          }, 2000);
+        }).catch(function() {
+          alert("No se pudo copiar el correo electrónico.");
+        });
+      } else {
+        alert("Dirección de correo electrónico: " + email);
+      }
+    }
+    
+    // Asignar la función al botón de contacto
+    const copyEmailButton = document.getElementById('copyEmailButton');
+    if (copyEmailButton) {
+      copyEmailButton.addEventListener('click', copyEmail);
+    }
+    
+    // Al cargar la página, actualizar la visibilidad de los controles móviles
     updateMobileControls();
   </script>
 </body>
