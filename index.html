@@ -182,10 +182,11 @@
     }
     
     /* ==============================================
-       Controles para dispositivos móviles
-       (solo se muestran en pantallas pequeñas)
+       Controles para dispositivos móviles (comandos del Asteroids)
+       Se muestran sólo en modo "asteroids" y en pantallas pequeñas (<=768px)
     ================================================ */
     .mobile-controls {
+      /* Por defecto se mantienen ocultos; su visualización la gestionará JS */
       display: none;
       position: fixed;
       bottom: 20px;
@@ -194,7 +195,7 @@
       z-index: 2000;
       pointer-events: none;
     }
-    /* Ahora se organiza la sección de movimiento en columna */
+    /* Organización en columna */
     .mobile-movement {
       position: fixed;
       bottom: 20px;
@@ -205,7 +206,7 @@
       gap: 10px;
       pointer-events: auto;
     }
-    /* Contenedor para las flechas izquierda y derecha */
+    /* Contenedor para flechas izquierda y derecha en fila */
     .btn-horizontal {
       display: flex;
       gap: 10px;
@@ -232,11 +233,6 @@
       font-size: 1.5em;
       pointer-events: auto;
     }
-    @media (max-width: 768px) {
-      .mobile-controls {
-        display: block;
-      }
-    }
   </style>
 </head>
 <body>
@@ -255,7 +251,7 @@
     <div class="hero-content">
       <h2>Bienvenido a Mi Mundo Digital</h2>
       <p>Explora mis proyectos y disfruta de un toque interactivo. Cambia el tema para jugar a Asteroids y ver mi habilidad en HTML, CSS y JS.</p>
-      <!-- Botón para desplazar a la sección de proyectos -->
+      <!-- Botón para desplazarse a la sección de proyectos -->
       <button onclick="scrollToProjects()">Ver Proyectos</button>
       <!-- Botón para cambiar el "tema": de letras animadas a juego Asteroids -->
       <button id="toggleGameBtn" onclick="toggleGameMode()">Cambiar Tema a Asteroids</button>
@@ -314,7 +310,7 @@
     <p>&copy; 2025 Mi Portafolio. Todos los derechos reservados.</p>
   </footer>
   
-  <!-- Controles móviles (solo se muestran en dispositivos táctiles/pantallas pequeñas) -->
+  <!-- Controles móviles (comandos de Asteroids) -->
   <div class="mobile-controls">
     <div class="mobile-movement">
       <button class="btn-move btn-up">↑</button>
@@ -328,10 +324,10 @@
   
   <!-- ==============================================
        Scripts: Efecto de letras (modo "particles"), Carrusel y Juego Asteroids
-  ================================================ -->
+  ============================================== -->
   <script>
     // Variables Globales y Canvas
-    let currentMode = "particles"; // Puede ser "particles" o "asteroids"
+    let currentMode = "particles"; // "particles" (modo letras) o "asteroids"
     let particlesAnimationId;
     let asteroidsAnimationId;
     
@@ -343,7 +339,10 @@
       canvas.width = window.innerWidth;
       canvas.height = document.querySelector('.hero').clientHeight;
     }
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('resize', function(){
+      resizeCanvas();
+      updateMobileControls();
+    });
     resizeCanvas();
     
     document.querySelector('.hero').addEventListener('mousemove', function(e) {
@@ -420,8 +419,23 @@
     }
     animateParticles();
     
+    // Función para actualizar la visibilidad de los controles móviles
+    function updateMobileControls(){
+      const mobileControls = document.querySelector('.mobile-controls');
+      const hero = document.querySelector('.hero');
+      if(mobileControls){
+        // Solo se muestran si estamos en modo "asteroids", en pantalla móvil y la sección de juego sigue visible
+        if(currentMode === "asteroids" && window.innerWidth <= 768 && hero.getBoundingClientRect().bottom >= 50){
+          mobileControls.style.display = "block";
+        } else {
+          mobileControls.style.display = "none";
+        }
+      }
+    }
+    
     // Función para alternar entre modos "particles" y "asteroids"
     function toggleGameMode() {
+      const mobileControls = document.querySelector('.mobile-controls');
       if (currentMode === "particles") {
         currentMode = "asteroids";
         cancelAnimationFrame(particlesAnimationId);
@@ -437,6 +451,7 @@
         animateParticles();
         document.getElementById('toggleGameBtn').textContent = "Cambiar Tema a Asteroids";
       }
+      updateMobileControls();
     }
     
     // MODO: JUEGO ASTEROIDS
@@ -622,7 +637,7 @@
       keys[e.key] = false;
     });
     
-    // Ajuste del efecto parallax en los proyectos
+    // Ajuste del efecto parallax en los proyectos y ocultar controles si se desplaza fuera del juego
     window.addEventListener('scroll', function() {
       const projects = document.querySelectorAll('.project');
       projects.forEach(project => {
@@ -631,6 +646,16 @@
         const offset = (rect.top - window.innerHeight / 2) * speed;
         project.style.transform = `translateY(${offset}px)`;
       });
+      
+      const hero = document.querySelector('.hero');
+      if (hero) {
+        // Si la parte inferior de la sección hero está muy arriba (menos de 50px visibles)
+        if (hero.getBoundingClientRect().bottom < 50) {
+          document.querySelector('.mobile-controls').style.display = "none";
+        } else {
+          updateMobileControls();
+        }
+      }
     });
     
     function scrollToProjects() {
@@ -699,6 +724,9 @@
         }
       });
     }
+    
+    // Al cargar la página, actualizar la visibilidad de los controles
+    updateMobileControls();
   </script>
 </body>
 </html>
