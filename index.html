@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portafolio - Tema Dinámico</title>
+  <style>
+    /* ==============================================
+       Variables y Reset
+    ================================================ */
+    :root {
+      --color-fondo: #141e30;
+      --color-fondo2: #243b55;
+      --color-texto: #fff;
+      --btn-bg: rgba(255, 255, 255, 0.3);
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* ==============================================
+       Fondo Global Animado
+    ================================================ */
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(-45deg, var(--color-fondo), var(--color-fondo2), #1f1c2c, #928dab);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: var(--color-texto);
+      line-height: 1.6;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    /* Animación plasma para botones */
+    @keyframes plasma {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    /* ==============================================
+       Header Fijo
+    ================================================ */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(5px);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+    header h1 {
+      font-size: 1.8em;
+      color: var(--color-texto);
+    }
+    header nav a {
+      color: var(--color-texto);
+      margin-left: 15px;
+      text-decoration: none;
+      font-size: 1em;
+      transition: color 0.3s;
+    }
+    header nav a:hover {
+      color: #ffcc00;
+    }
+    
+    /* ==============================================
+       Sección Hero: Contendrá un canvas que usaremos para ambos modos
+    ================================================ */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+    /* El canvas ocupa toda la sección hero */
+    #hero-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+    /* Contenido del Hero */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 20px;
+      margin-top: 60px; /* para evitar que quede tapado por el header */
+    }
+    .hero h2 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+    }
+    .hero p {
+      font-size: 1.2em;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+    .hero button {
+      padding: 10px 25px;
+      font-size: 1em;
+      border: none;
+      border-radius: 25px;
+      background: var(--btn-bg);
+      color: var(--color-texto);
+      cursor: pointer;
+      transition: background 0.3s;
+      margin: 10px;
+    }
+    .hero button:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+    
+    /* ==============================================
+       Sección de Proyectos (Carrusel)
+    ================================================ */
+    /* Contenedor del slider: oculta el overflow */
+/* Sección de Proyectos con Efecto Parallax */
+.projects {
+  padding: 60px 20px;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  position: relative;
+  overflow: hidden;
+}
+.projects h3 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2em;
+  color: var(--color-texto);
+}
+.projects-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.project {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: transform 0.3s ease-out;
+}
+.project img {
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+}
+.project a {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--color-texto);
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  z-index: 1;
+}
+
+
+    /* ==============================================
+       Footer
+    ================================================ */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(5px);
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <!-- Encabezado -->
+  <header>
+    <h1>Mi Portafolio</h1>
+    <nav>
+      <a href="#projects">Proyectos</a>
+      <a href="#contact">Contacto</a>
+    </nav>
+  </header>
+  
+  <!-- Sección Hero -->
+  <section class="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <h2>Bienvenido a Mi Mundo Digital</h2>
+      <p>Explora mis proyectos y disfruta de un toque interactivo. Cambia el tema para jugar a Asteroids y ver mi habilidad en HTML, CSS y JS.</p>
+      <!-- Botón para desplazar a la sección de proyectos -->
+      <button onclick="scrollToProjects()">Ver Proyectos</button>
+      <!-- Botón para cambiar el "tema": de letras animadas a juego Asteroids -->
+      <button id="toggleGameBtn" onclick="toggleGameMode()">Cambiar Tema a Asteroids</button>
+    </div>
+  </section>
+  
+  <!-- Sección de Proyectos (Carrusel) -->
+  <!-- Sección de Proyectos: Slider Horizontal Continuo -->
+<!-- Sección de Proyectos: Efecto Parallax -->
+<section class="projects" id="projects">
+  <h3>Mis Proyectos</h3>
+  <div class="projects-container">
+    <div class="project" data-speed="0.1">
+      <img src="/home/mb/Pictures/Screenshots/Screenshot from 2025-02-11 12-09-40.png" alt="Proyecto 1">
+      <a href="/home/mb/Documents/portfolio/2093_flight/index.html" target="_blank">Proyecto 1</a>
+    </div>
+    <div class="project" data-speed="0.15">
+      <img src="/home/mb/Pictures/Screenshots/Screenshot from 2025-02-11 12-12-07.png" alt="Proyecto 2">
+      <a href="/home/mb/Documents/portfolio/Atema/index.html" target="_blank">Proyecto 2</a>
+    </div>
+    <div class="project" data-speed="0.2">
+      <img src="/home/mb/Pictures/Screenshots/Screenshot from 2025-02-12 08-02-30.png" alt="Proyecto 3">
+      <a href="/home/mb/Documents/portfolio/Beauttio Website Template/index.html" target="_blank">Proyecto 3</a>
+    </div>
+    <div class="project" data-speed="0.12">
+      <img src="/home/mb/Pictures/Screenshots/Screenshot from 2025-02-12 08-03-19.png" alt="Proyecto 4">
+      <a href="/home/mb/Documents/portfolio/carvilla-v1.0/index.html" target="_blank">Proyecto 4</a>
+    </div>
+    <div class="project" data-speed="0.18">
+      <img src="/home/mb/Pictures/Screenshots/Screenshot from 2025-02-12 08-03-47.png" alt="Proyecto 5">
+      <a href="/home/mb/Documents/portfolio/dpot/index.html" target="_blank">Proyecto 5</a>
+    </div>
+    <div class="project" data-speed="0.14">
+      <img src="/home/mb/Pictures/Screenshots/Screenshot from 2025-02-12 08-04-13.png" alt="Proyecto 6">
+      <a href="/home/mb/Documents/portfolio/giftos-html/index.html" target="_blank">Proyecto 6</a>
+    </div>
+    <div class="project" data-speed="0.16">
+      <img src="/home/mb/Pictures/Screenshots/Screenshot from 2025-02-12 08-04-35.png" alt="Proyecto 7">
+      <a href="/home/mb/Documents/portfolio/labspa/index.html" target="_blank">Proyecto 7</a>
+    </div>
+    <div class="project" data-speed="0.11">
+      <img src="/home/mb/Pictures/Screenshots/Screenshot from 2025-02-12 08-05-04.png" alt="Proyecto 8">
+      <a href="/home/mb/Documents/portfolio/law-firm-website-template/index.html" target="_blank">Proyecto 8</a>
+    </div>
+    <div class="project" data-speed="0.17">
+      <img src="/home/mb/Pictures/Screenshots/Screenshot from 2025-02-12 08-05-27.png" alt="Proyecto 9">
+      <a href="/home/mb/Documents/portfolio/melodi/index.html" target="_blank">Proyecto 9</a>
+    </div>
+    <div class="project" data-speed="0.13">
+      <img src="/home/mb/Pictures/Screenshots/Screenshot from 2025-02-12 08-05-52.png" alt="Proyecto 10">
+      <a href="/home/mb/Documents/portfolio/pet-shop-website-template/index.html" target="_blank">Proyecto 10</a>
+    </div>
+  </div>
+</section>
+
+
+  
+  <!-- Footer -->
+  <footer id="contact">
+    <p>&copy; 2025 Mi Portafolio. Todos los derechos reservados.</p>
+  </footer>
+  
+  <!-- ==============================================
+       Scripts: Efecto de letras (modo "particles"), Carrusel y Juego Asteroids
+  ================================================ -->
+  <script>
+    // Variables Globales y Canvas
+    let currentMode = "particles"; // Puede ser "particles" o "asteroids"
+    let particlesAnimationId;
+    let asteroidsAnimationId;
+    
+    const canvas = document.getElementById('hero-canvas');
+    const ctx = canvas.getContext('2d');
+    const mouse = { x: null, y: null };
+    
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = document.querySelector('.hero').clientHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    
+    document.querySelector('.hero').addEventListener('mousemove', function(e) {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    });
+    
+    // MODO: LLUVIA DE LETRAS (Particles)
+    let globalHue = 0;
+    let particlesArray = [];
+    
+    class Particle {
+      constructor(x, y, speed, char) {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.char = char;
+        this.size = Math.random() * 15 + 10;
+        this.velocityX = (Math.random() - 0.5) * 2;
+        this.velocityY = speed;
+      }
+      update() {
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if(distance < 100) {
+          const force = (100 - distance) / 100;
+          this.velocityX += (dx / distance) * force;
+          this.velocityY += (dy / distance) * force;
+        }
+        this.x += this.velocityX;
+        this.y += this.velocityY;
+        if (this.y > canvas.height || this.x > canvas.width || this.x < 0) {
+          this.y = 0;
+          this.x = Math.random() * canvas.width;
+          this.velocityX = (Math.random() - 0.5) * 2;
+          this.velocityY = this.speed;
+        }
+      }
+      draw() {
+        let gradient = ctx.createLinearGradient(this.x, this.y, this.x + this.size, this.y + this.size);
+        gradient.addColorStop(0, `hsl(${globalHue % 360}, 100%, 50%)`);
+        gradient.addColorStop(0.5, `hsl(${(globalHue + 120) % 360}, 100%, 50%)`);
+        gradient.addColorStop(1, `hsl(${(globalHue + 240) % 360}, 100%, 50%)`);
+        ctx.fillStyle = gradient;
+        ctx.font = `${this.size}px monospace`;
+        ctx.fillText(this.char, this.x, this.y);
+      }
+    }
+    
+    function initParticles() {
+      particlesArray = [];
+      const numberOfParticles = 150;
+      const characters = 'HTMLCSSJS2025';
+      for (let i = 0; i < numberOfParticles; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const speed = Math.random() * 1 + 0.5;
+        const char = characters[Math.floor(Math.random() * characters.length)];
+        particlesArray.push(new Particle(x, y, speed, char));
+      }
+    }
+    initParticles();
+    
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      globalHue += 0.5;
+      for (let particle of particlesArray) {
+        particle.update();
+        particle.draw();
+      }
+      particlesAnimationId = requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+    
+    // Función para alternar entre modos "particles" y "asteroids"
+    function toggleGameMode() {
+      if (currentMode === "particles") {
+        currentMode = "asteroids";
+        cancelAnimationFrame(particlesAnimationId);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        initAsteroids();
+        animateAsteroids();
+        document.getElementById('toggleGameBtn').textContent = "Cambiar Tema a Letras";
+      } else {
+        currentMode = "particles";
+        cancelAnimationFrame(asteroidsAnimationId);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        initParticles();
+        animateParticles();
+        document.getElementById('toggleGameBtn').textContent = "Cambiar Tema a Asteroids";
+      }
+    }
+    
+    // MODO: JUEGO ASTEROIDS
+    let ship;
+    let bullets = [];
+    let asteroids = [];
+    let keys = {};
+    
+    class Spaceship {
+      constructor() {
+        this.x = canvas.width / 2;
+        this.y = canvas.height / 2;
+        this.angle = 0;
+        this.velocityX = 0;
+        this.velocityY = 0;
+        this.radius = 15;
+      }
+      update() {
+        if (keys['a']) {
+          this.angle -= 0.07;
+        }
+        if (keys['d']) {
+          this.angle += 0.07;
+        }
+        if (keys['w']) {
+          const acceleration = 0.1;
+          this.velocityX += Math.cos(this.angle) * acceleration;
+          this.velocityY += Math.sin(this.angle) * acceleration;
+        }
+        this.velocityX *= 0.99;
+        this.velocityY *= 0.99;
+        this.x += this.velocityX;
+        this.y += this.velocityY;
+        if (this.x < 0) this.x += canvas.width;
+        if (this.x > canvas.width) this.x -= canvas.width;
+        if (this.y < 0) this.y += canvas.height;
+        if (this.y > canvas.height) this.y -= canvas.height;
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.beginPath();
+        ctx.moveTo(20, 0);
+        ctx.lineTo(-15, 10);
+        ctx.lineTo(-15, -10);
+        ctx.closePath();
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+    
+    class Bullet {
+      constructor(x, y, angle) {
+        this.x = x;
+        this.y = y;
+        this.angle = angle;
+        const speed = 5;
+        this.velocityX = Math.cos(angle) * speed + ship.velocityX;
+        this.velocityY = Math.sin(angle) * speed + ship.velocityY;
+        this.radius = 2;
+        this.life = 0;
+        this.maxLife = 80;
+      }
+      update() {
+        this.x += this.velocityX;
+        this.y += this.velocityY;
+        this.life++;
+        if (this.x < 0) this.x += canvas.width;
+        if (this.x > canvas.width) this.x -= canvas.width;
+        if (this.y < 0) this.y += canvas.height;
+        if (this.y > canvas.height) this.y -= canvas.height;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "white";
+        ctx.fill();
+      }
+    }
+    
+    class Asteroid {
+      constructor(x, y, radius, velocityX, velocityY) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.velocityX = velocityX;
+        this.velocityY = velocityY;
+      }
+      update() {
+        this.x += this.velocityX;
+        this.y += this.velocityY;
+        if (this.x < 0) this.x += canvas.width;
+        if (this.x > canvas.width) this.x -= canvas.width;
+        if (this.y < 0) this.y += canvas.height;
+        if (this.y > canvas.height) this.y -= canvas.height;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    }
+    
+    function initAsteroids() {
+      ship = new Spaceship();
+      bullets = [];
+      asteroids = [];
+      for (let i = 0; i < 5; i++) {
+        let radius = Math.random() * 20 + 20;
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        let velocityX = (Math.random() - 0.5) * 1.5;
+        let velocityY = (Math.random() - 0.5) * 1.5;
+        asteroids.push(new Asteroid(x, y, radius, velocityX, velocityY));
+      }
+    }
+    
+    function animateAsteroids() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ship.update();
+      ship.draw();
+      for (let i = bullets.length - 1; i >= 0; i--) {
+        bullets[i].update();
+        bullets[i].draw();
+        if (bullets[i].life > bullets[i].maxLife) {
+          bullets.splice(i, 1);
+        }
+      }
+      for (let i = asteroids.length - 1; i >= 0; i--) {
+        asteroids[i].update();
+        asteroids[i].draw();
+        for (let j = bullets.length - 1; j >= 0; j--) {
+          let dx = asteroids[i].x - bullets[j].x;
+          let dy = asteroids[i].y - bullets[j].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < asteroids[i].radius + bullets[j].radius) {
+            // Guardamos el asteroide destruido para fragmentarlo
+            let destroyedAsteroid = asteroids[i];
+            bullets.splice(j, 1);
+            asteroids.splice(i, 1);
+            // Si el asteroide es lo suficientemente grande, lo fragmentamos en entre 3 y 5 piezas
+            if (destroyedAsteroid.radius > 10) {
+              let pieces = Math.floor(Math.random() * 3) + 3; // genera 3, 4 o 5 piezas
+              for (let k = 0; k < pieces; k++) {
+                let newRadius = destroyedAsteroid.radius / 2;
+                let newVelocityX = (Math.random() - 0.5) * 2;
+                let newVelocityY = (Math.random() - 0.5) * 2;
+                asteroids.push(new Asteroid(destroyedAsteroid.x, destroyedAsteroid.y, newRadius, newVelocityX, newVelocityY));
+              }
+            }
+            break;
+          }
+        }
+      }
+      if (asteroids.length < 5) {
+        let radius = Math.random() * 20 + 20;
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height;
+        let velocityX = (Math.random() - 0.5) * 1.5;
+        let velocityY = (Math.random() - 0.5) * 1.5;
+        asteroids.push(new Asteroid(x, y, radius, velocityX, velocityY));
+      }
+      asteroidsAnimationId = requestAnimationFrame(animateAsteroids);
+    }
+    
+    // Controles del juego Asteroids
+    window.addEventListener('keydown', function(e) {
+      keys[e.key] = true;
+      if (currentMode === "asteroids" && e.key === " ") {
+        e.preventDefault();
+        let bullet = new Bullet(
+          ship.x + Math.cos(ship.angle) * 20,
+          ship.y + Math.sin(ship.angle) * 20,
+          ship.angle
+        );
+        bullets.push(bullet);
+      }
+    });
+    window.addEventListener('keyup', function(e) {
+      keys[e.key] = false;
+    });
+    
+    // Seleccionamos el contenedor del slider
+    window.addEventListener('scroll', function() {
+  const projects = document.querySelectorAll('.project');
+  projects.forEach(project => {
+    const speed = parseFloat(project.getAttribute('data-speed'));
+    // Se obtiene la posición del elemento respecto al viewport
+    const rect = project.getBoundingClientRect();
+    // Calculamos el offset; cuanto más cerca del centro del viewport, menor será el efecto.
+    const offset = (rect.top - window.innerHeight / 2) * speed;
+    project.style.transform = `translateY(${offset}px)`;
+  });
+});
+
+function scrollToProjects() {
+    document.getElementById("projects").scrollIntoView({ behavior: "smooth" });
+  }
+
+
+  </script>
+</body>
+</html>
