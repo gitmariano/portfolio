@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Portafolio - Tema Dinámico</title>
+  <title>Portfolio - Dynamic Theme</title>
   <style>
     /* ==============================================
        Variables y Reset
@@ -313,8 +313,8 @@
   <header>
     <h1>Portfolio</h1>
     <nav>
-      <a href="#projects">Proyectos</a>
-      <a href="#contact">Contacto</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
     </nav>
   </header>
   
@@ -322,16 +322,17 @@
   <section class="hero">
     <canvas id="hero-canvas"></canvas>
     <div class="hero-content">
-      <h2>Bienvenido a Mi Mundo Digital</h2>
-      <p>Cambia el tema para jugar a Asteroids y ver mi habilidad en HTML, PHP, CSS y JS. <span style="font-size: 80%; color: red;">PC: wad + spacebar</span></p>
-      <button onclick="scrollToProjects()">Ver Proyectos</button>
-      <button id="toggleGameBtn" onclick="toggleGameMode()">Cambiar Tema a Asteroids</button>
+      <h2>Welcome to My Digital World</h2>
+      <p>Switch the theme to play Asteroids and see my skills in HTML, PHP, CSS, and JS.
+        <span style="font-size: 80%; color: red;">PC: wad + spacebar</span></p>
+      <button onclick="scrollToProjects()">Projects</button>
+      <button id="toggleGameBtn" onclick="toggleGameMode()">Switch Theme to Asteroids</button>
     </div>
   </section>
   
   <!-- Sección de Proyectos (Carrusel) -->
   <section class="projects" id="projects">
-    <h3>Mis Proyectos</h3>
+    <h3>Projects</h3>
     <div class="projects-container">
       <div class="project" data-speed="0.1">
         <img src="Screenshots/1.png" alt="Proyecto 1">
@@ -378,17 +379,17 @@
   
   <!-- Sección de Contacto -->
   <section id="contact">
-    <h3>Contacto</h3>
-    <p>¿Necesitas una solución personalizada? Nos encantaría explorar la posibilidad. Gracias a nuestro novedoso método de desarrollo, que incluye modelos de IA de avanzada, hemos reducido hasta 10 veces los costes de desarrollo web. Envíanos un mensaje y tendrás una cotización el mismo día.</p>
+    <h3>Contact</h3>
+    <p>Do you need a custom solution? We’d love to explore the possibility. Thanks to our innovative development method, which includes advanced AI models, we’ve reduced web development costs by up to 10 times. Send us a message, and you'll receive a quote the same day.</p>
     <button id="copyEmailButton">
       <span class="email-icon">✉</span>
-      <span class="button-text">Copiar Email</span>
+      <span class="button-text">Copy Email</span>
     </button>
   </section>
   
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Mi Portfolio. Todos los derechos reservados.</p>
+    <p>&copy; 2025 My Portfolio. All rights reserved.</p>
   </footer>
   
   <!-- Controles móviles (comandos de Asteroids) -->
@@ -525,14 +526,14 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         initAsteroids();
         animateAsteroids();
-        document.getElementById('toggleGameBtn').textContent = "Cambiar Tema a Letras";
+        document.getElementById('toggleGameBtn').textContent = "Switch Theme to Letters";
       } else {
         currentMode = "particles";
         cancelAnimationFrame(asteroidsAnimationId);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         initParticles();
         animateParticles();
-        document.getElementById('toggleGameBtn').textContent = "Cambiar Tema a Asteroids";
+        document.getElementById('toggleGameBtn').textContent = "Switch Theme to Asteroids";
       }
       updateMobileControls();
     }
@@ -822,15 +823,15 @@
 
       if (navigator.clipboard) {
         navigator.clipboard.writeText(email).then(function() {
-          textSpan.innerText = "Email Copiado";
+          textSpan.innerText = "Email Copied";
           setTimeout(function() {
-            textSpan.innerText = "Copiar Email";
+            textSpan.innerText = "Copy Email";
           }, 2000);
         }).catch(function() {
-          alert("No se pudo copiar el correo electrónico.");
+          alert("The email could not be copied.");
         });
       } else {
-        alert("Dirección de correo electrónico: " + email);
+        alert("Email address: " + email);
       }
     }
     
